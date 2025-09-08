@@ -2,6 +2,7 @@ package com.example.UserManagement.Service;
 
 import com.example.UserManagement.Entity.User;
 import com.example.UserManagement.Repository.UserRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +41,16 @@ public class UserService {
 
     public void createUsers(List<User> users) {
         userRepo.saveAll(users);
+    }
+
+    @Transactional
+    public void deleteAllUsersAndResetId() {
+        userRepo.deleteAll();//Delete All Users
+        userRepo.resetAutoIncrement();//Reset Counter to 1
+    }
+
+    @Transactional
+    public void truncateUsers() {
+        userRepo.truncateUsers();
     }
 }

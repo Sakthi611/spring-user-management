@@ -43,32 +43,47 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String createUser(@RequestBody User user){
+    public ResponseEntity<String> createUser(@RequestBody User user){
         userService.createUser(user);
-        return "Created User Successfully";
+        return  ResponseEntity.ok("Created User Successfully");
     }
 
     @PostMapping("/create/users")
-    public String createUsers(@RequestBody List<User> users){
+    public ResponseEntity<String> createUsers(@RequestBody List<User> users){
         userService.createUsers(users);
-        return "Created Users Successfully";
+        return ResponseEntity.ok().body( "Created Users Successfully");
     }
 
     @PutMapping("/update/{id}")
-    public String updateUserById(@PathVariable("id") Long id, @RequestBody User user){
+    public ResponseEntity<String> updateUserById(@PathVariable("id") Long id, @RequestBody User user){
         userService.updateUserById(id,user);
-        return "Updated the User Successfully";
+        return ResponseEntity.ok().body( "Updated the User Successfully");
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteUserById(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteUserById(@PathVariable("id") Long id){
         userService.deleteUserById(id);
-        return "Deleted User Successfully";
+        return ResponseEntity.ok().body("Deleted User Successfully");
     }
 
     @DeleteMapping("/deleteAll")
-    public String deleteAllUser(){
+    public ResponseEntity<String> deleteAllUser(){
         userService.deleteAllUser();
-        return "All Users Deleted Successfully";
+        return ResponseEntity.ok().body("All Users Deleted Successfully");
     }
+
+    //Delete All User and reset to 1
+    @DeleteMapping("/reset")
+    public ResponseEntity<String> deleteAllUsersAndResetId(){
+        userService.deleteAllUsersAndResetId();
+        return ResponseEntity.ok("Reset Table Successfully");
+    }
+
+    @DeleteMapping("/truncate")
+    public ResponseEntity<String> truncateUsers(){
+        userService.truncateUsers();
+        return ResponseEntity.ok("All Users are Deleted and Id Counter reset to 1 using TRUNCATE");
+    }
+
+
 }
