@@ -79,6 +79,8 @@ public class UserController {
         return ResponseEntity.ok("Reset Table Successfully");
     }
 
+
+    //keeps the table as empty
     @DeleteMapping("/truncate")
     public ResponseEntity<String> truncateUsers(){
         userService.truncateUsers();

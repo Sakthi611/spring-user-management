@@ -11,6 +11,6 @@ public interface UserRepo extends JpaRepository<User,Long> {
     void resetAutoIncrement();
 
     @Modifying
-    @Query(value="Truncate Table users")
+    @Query(value="Truncate Table users", nativeQuery = true)
     void truncateUsers();
 }
