@@ -12,4 +12,9 @@ public class HelloController {
     public String home(){
         return "Welcome to Home Page";
     }
+
+    @GetMapping("/dashboard")
+    public String dashboard(){
+        return "Welcome to DashBoard page";
+    }
 }

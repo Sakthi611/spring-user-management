@@ -21,7 +21,7 @@ public class SecurityConfig {
                 auth.requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/").permitAll()
                 )
-                .formLogin(form -> form.permitAll()) ;
+                .formLogin(form -> form.permitAll().defaultSuccessUrl("/dashboard")) ;
         return http.build();
     }
 
