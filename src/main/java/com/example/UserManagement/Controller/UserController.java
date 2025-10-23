@@ -1,10 +1,11 @@
 package com.example.UserManagement.Controller;
 
-import com.example.UserManagement.Entity.User;
+import com.example.UserManagement.Entity.UserEntity;
 import com.example.UserManagement.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.ResourceBundle;
 public class UserController {
 @Autowired
     private UserService userService;
+@Autowired
+private PasswordEncoder passwordEncoder;
     @GetMapping("/welcome")
     public String welcome(){
 
@@ -24,7 +27,7 @@ public class UserController {
 
     @GetMapping("/")
     public ResponseEntity<?> getUsers(){
-        List<User> users=userService.getAllUsers();
+        List<UserEntity> users=userService.getAllUsers();
         if(users.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("No user is found in the Database");
@@ -33,7 +36,7 @@ public class UserController {
     }
     @GetMapping("{id}")
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id){
-        Optional<User> user=userService.getUserById(id);
+        Optional<UserEntity> user=userService.getUserById(id);
         if(user.isPresent()){
             return ResponseEntity.ok(user.get());
         }
@@ -43,19 +46,20 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createUser(@RequestBody User user){
+    public ResponseEntity<String> createUser(@RequestBody UserEntity user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.createUser(user);
         return  ResponseEntity.ok("Created User Successfully");
     }
 
     @PostMapping("/create/users")
-    public ResponseEntity<String> createUsers(@RequestBody List<User> users){
+    public ResponseEntity<String> createUsers(@RequestBody List<UserEntity> users){
         userService.createUsers(users);
         return ResponseEntity.ok().body( "Created Users Successfully");
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateUserById(@PathVariable("id") Long id, @RequestBody User user){
+    public ResponseEntity<String> updateUserById(@PathVariable("id") Long id, @RequestBody UserEntity user){
         userService.updateUserById(id,user);
         return ResponseEntity.ok().body( "Updated the User Successfully");
     }
