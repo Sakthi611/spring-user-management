@@ -23,4 +23,18 @@ public class JwtUtil {
                 .signWith(SECRET_KEY)
                 .compact();
     }
+
+    public Boolean validateToken(String token, String username){
+        return extractUsername(token).equals(username);
+
+    }
+    public String extractUsername(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+
+    }
 }
